@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+    <script src="../src/index.js" defer></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="header">
+        <h1>TO-DO APP</h1>
+    </div>
+    <div class="sideMenu">
+        <div class="menuItem" id="allProjects">All projects</div>
+        <div class="menuItem" id="projectGroups">Groups</div>
+    </div>
+    <div class="content">
+        <div class="item" id="item0">
+            <div id="title">Title</div>
+            <div id="dueDate">14/4</div>
+            <input type="checkbox" name="completed" id="task0">
+        </div>
+        <div class="taskMenu">
+            <label for="title">Enter a title</label>
+            <input id="title" type="text" placeholder="Title">
+
+            <label for="group">Choose a group</label>
+            <select id="group">
+                <option value="Group1" selected>Group 1</option>
+                <option value="Group2">Group 2</option>
+                <option value="Group3">Group 3</option>
+            </select>
+            <label for="date">Due date</label>
+            <input id="date" type="date">
+
+            <label for="description">Description</label>
+            <textarea id="description" type="text" placeholder="Description.."></textarea>
+            <button type="button" id="addTask">Add Task</button>
+        </div>
+
+    </div>
+</body>
+</html>
