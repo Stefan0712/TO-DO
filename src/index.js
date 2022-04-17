@@ -130,10 +130,11 @@ function addTaskToUI(task){
     taskMenu.remove();
 
     //creates the item that will be the task
+    let viewId = task.group.replace(/\s+/g, '');
     const item = document.createElement('div')
     item.setAttribute('id',`item${task.index}`)
     item.classList.add('item')
-    allTasksView.appendChild(item)
+    document.getElementById(`${viewId}View`).appendChild(item)
 
     const itemTitle = document.createElement('div')
     itemTitle.setAttribute('id','title')
@@ -151,14 +152,13 @@ function addTaskToUI(task){
     itemCheckBox.setAttribute('onclick',`completeItem(${task.index})`);
     item.appendChild(itemCheckBox)
 
-    let viewID = `${task.group}View`;
-    document.getElementById(viewID).appendChild(item.cloneNode(true))
 
 
 }
 function completeItem(index){
     const item = document.getElementById(`item${index}`)
     const checkBox = document.getElementById(`task${index}`)
+    
     if(checkBox.checked == true){
         tasks[index].group = "completed";
         item.style.cssText = "background-color: lightgreen; border: 1px solid green;";
@@ -167,8 +167,9 @@ function completeItem(index){
     } else {
         tasks[index].group = tasks[index].oldGroup;
         item.style.cssText = "background-color: rgba(67, 145, 155,0.5); border: none;";
-        allTasksView.appendChild(item);
-
+        let viewId = tasks[index].group.replace(/\s+/g, '');
+        document.getElementById(`${viewId}View`).appendChild(item);
+        
 
     }
 
@@ -239,7 +240,6 @@ function createNewGroup(){
     const newView = document.createElement('div')
     newView.setAttribute('id',`${viewId}`);
     newView.classList.add('views')
-    newView.style.cssText = "height: 100%; width: 100%;";
     content.appendChild(newView);
     views.push(`${viewId}`);
     groups.push(name);
