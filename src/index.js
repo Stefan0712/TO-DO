@@ -113,6 +113,7 @@ function addTask(){
     task.description = descriptionValue;
     task.group = groupValue;
     task.index = currentIndex;*/
+
     currentIndex++;
     console.log(task);
     tasks.push(task);
@@ -150,6 +151,9 @@ function addTaskToUI(task){
     itemCheckBox.setAttribute('onclick',`completeItem(${task.index})`);
     item.appendChild(itemCheckBox)
 
+    let viewID = `${task.group}View`;
+    document.getElementById(viewID).appendChild(item.cloneNode(true))
+
 
 }
 function completeItem(index){
@@ -164,6 +168,8 @@ function completeItem(index){
         tasks[index].group = tasks[index].oldGroup;
         item.style.cssText = "background-color: rgba(67, 145, 155,0.5); border: none;";
         allTasksView.appendChild(item);
+
+
     }
 
 
@@ -233,6 +239,7 @@ function createNewGroup(){
     const newView = document.createElement('div')
     newView.setAttribute('id',`${viewId}`);
     newView.classList.add('views')
+    newView.style.cssText = "height: 100%; width: 100%;";
     content.appendChild(newView);
     views.push(`${viewId}`);
     groups.push(name);
