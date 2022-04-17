@@ -9,7 +9,7 @@ const completedTasksBtn = document.getElementById("completedTasks")
 const addGroupBtn = document.getElementById('newGroupBtn');
 let tasks = [];
 let currentIndex = 0;
-let groups = ["Default", "Completed"];
+let groups = ["allTasks", "Completed"];
 let views = ['allTasksView','completedTasksView'];
 
 
