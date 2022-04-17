@@ -103,14 +103,14 @@ addBtn.onclick = function createTaskMenu(){
 function addTask(){
     
 
-    //gets the values from the inputs
+    //get the values from the inputs
     const titleValue = document.getElementById('title').value;
     const dateValue = document.getElementById('date').value;
     const descriptionValue = document.getElementById("description").value;
     const groupValue = document.getElementById('group').value;
 
     //creates a new object with those values
-    var task = new Task(titleValue,groupValue, dateValue, descriptionValue, currentIndex);
+    var task = new Task(titleValue, groupValue, dateValue, descriptionValue, currentIndex);
     
     /*var task = Object.create(Task);
     task.title = titleValue;
@@ -142,7 +142,7 @@ function addTaskToUI(task){
     document.getElementById(`${viewId}View`).appendChild(item)
 
     const itemTitle = document.createElement('div')
-    itemTitle.setAttribute('id','title')
+    itemTitle.setAttribute('id','itemTitle')
     itemTitle.innerHTML = task.title
     item.appendChild(itemTitle);
     
