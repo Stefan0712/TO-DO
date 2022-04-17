@@ -30,7 +30,12 @@ addBtn.onclick = function createTaskMenu(){
     //create task menu
     const taskMenu = document.createElement('div')
     taskMenu.classList.add('taskMenu')
-    allTasksView.appendChild(taskMenu)
+    content.appendChild(taskMenu)
+    const closeIcon = document.createElement('div')
+    closeIcon.innerHTML = "✖";
+    closeIcon.setAttribute('onclick','document.querySelector(".taskMenu").remove();')
+
+    taskMenu.appendChild(closeIcon);
 
     //create title label and input
     const titleLabel = document.createElement('label')
@@ -229,6 +234,17 @@ function createNewGroupMenu(){
 
 function createNewGroup(){
     const name = document.getElementById('nameInput').value;
+    for(let i=0;i<groups.length;i++){
+        if(groups[i] == name){
+            const input = document.getElementById("nameInput");
+            input.style.cssText = "border: 1px solid red";
+            const error = document.createElement('div')
+            error.setAttribute('id','nameError')
+            error.innerText = "The group name already exists!";
+            document.getElementById("newGroupMenu").appendChild(error);
+            document.getElementById("groupSubmitButton").disable = true;
+        }
+    }
     let btnId = name.replace(/\s+/g, '');
     let viewId = `${btnId}View`;
     const button = document.createElement('div')
