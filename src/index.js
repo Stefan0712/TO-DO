@@ -28,6 +28,7 @@ function Task(title,group,date, description, index){
 
 addBtn.onclick = function createTaskMenu(){
     //create task menu
+    if(document.querySelector(".taskMenu") === null){
     const taskMenu = document.createElement('div')
     taskMenu.classList.add('taskMenu')
     content.appendChild(taskMenu)
@@ -97,6 +98,7 @@ addBtn.onclick = function createTaskMenu(){
     taskBtn.setAttribute("onclick","addTask()")
     taskBtn.innerHTML = "Add"
     taskMenu.appendChild(taskBtn)
+    }
     
 }
 
@@ -130,7 +132,6 @@ function addTask(){
 function addTaskToUI(task){
 
     //removes task menu
-    const allTasksView = document.getElementById('allTasksView')
     const taskMenu = document.querySelector('.taskMenu')
     taskMenu.remove();
 
@@ -138,16 +139,17 @@ function addTaskToUI(task){
     let viewId = task.group.replace(/\s+/g, '');
     const item = document.createElement('div')
     item.setAttribute('id',`item${task.index}`)
+    item.setAttribute('onclick',`editTaskMenu(${task.index})`)
     item.classList.add('item')
     document.getElementById(`${viewId}View`).appendChild(item)
 
     const itemTitle = document.createElement('div')
-    itemTitle.setAttribute('id','itemTitle')
+    itemTitle.setAttribute('id',`itemTitle${task.index}`)
     itemTitle.innerHTML = task.title
     item.appendChild(itemTitle);
     
     const itemDueDate = document.createElement('div')
-    itemDueDate.setAttribute('id','dueDate')
+    itemDueDate.setAttribute('id',`dueDate${task.index}`);
     itemDueDate.innerText = task.date;
     item.appendChild(itemDueDate)
 
@@ -156,7 +158,7 @@ function addTaskToUI(task){
     itemCheckBox.setAttribute('id',`task${task.index}`);
     itemCheckBox.setAttribute('onclick',`completeItem(${task.index})`);
     item.appendChild(itemCheckBox)
-
+    
 
 
 }
@@ -235,9 +237,13 @@ function createNewGroupMenu(){
 function createNewGroup(){
     const name = document.getElementById('nameInput').value;
     for(let i=0;i<groups.length;i++){
-        if(groups[i] == name){
+        if(groups[i] == name || name=="" || name==" "){
             const input = document.getElementById("nameInput");
             input.style.cssText = "border: 1px solid red";
+            if(document.getElementById("nameError")!==null){
+
+                document.getElementById('nameError').remove();
+            }
             const error = document.createElement('div')
             error.setAttribute('id','nameError')
             error.innerText = "The group name already exists!";
@@ -278,6 +284,100 @@ function changeView(viewId){
 
 
 
+
+function editTaskMenu(index){
+    if(document.querySelector(".taskMenu") === null){
+    //create task menu
+    const taskMenu = document.createElement('div')
+    taskMenu.classList.add('taskMenu')
+    content.appendChild(taskMenu)
+    const closeIcon = document.createElement('div')
+    closeIcon.innerHTML = "✖";
+    closeIcon.setAttribute('onclick','document.querySelector(".taskMenu").remove();')
+
+    taskMenu.appendChild(closeIcon);
+
+    //create title label and input
+    const titleLabel = document.createElement('label')
+    titleLabel.innerText = "Enter a title"
+    const title = document.createElement("input")
+    title.setAttribute('id','title')
+    title.setAttribute('type','text')
+    title.setAttribute('value',tasks[index].title)
+    taskMenu.appendChild(titleLabel)
+    taskMenu.appendChild(title)
+
+    //create group selection 
+    const groupLabel = document.createElement('label')
+    groupLabel.innerText = "Select a group"
+    const group = document.createElement("select")
+    group.setAttribute('id','group')
+    taskMenu.appendChild(groupLabel)
+    taskMenu.appendChild(group)
+
+    //create selection options
+
+    for(let i=0;i<groups.length;i++){
+        const option = document.createElement('option')
+        option.setAttribute('value',`${groups[i]}`)
+        if(groups[i]==tasks[index].group){
+            option.setAttribute("selected","true")
+        }
+        option.innerText = `${groups[i]}`
+        group.appendChild(option);
+
+    }
+
+
+   
+
+    //create date input for due date
+    const dueDateLabel = document.createElement('label')
+    dueDateLabel.innerText = "Due date"
+
+    const dueDate = document.createElement('input')
+    dueDate.setAttribute('type','date')
+    dueDate.setAttribute('id','date')
+    dueDate.setAttribute('value',`${tasks[index].date}`);
+
+    taskMenu.appendChild(dueDateLabel)
+    taskMenu.appendChild(dueDate)
+    
+
+    //add description input
+    const descriptionLabel = document.createElement('label')
+    descriptionLabel.innerText = "Description"
+    const description = document.createElement('textarea')
+    description.setAttribute('id','description')
+    description.setAttribute('value',tasks[index].description)
+    taskMenu.appendChild(descriptionLabel)
+    taskMenu.appendChild(description)
+
+    //create the add task button
+
+    const taskBtn = document.createElement('button')
+    taskBtn.setAttribute("type","button")
+    taskBtn.setAttribute('id','addTask')
+    taskBtn.setAttribute("onclick",`editTask(${index})`)
+    taskBtn.innerHTML = "Save changes"
+    taskMenu.appendChild(taskBtn)
+    }
+    
+}
+function editTask(index){
+    tasks[index].title = document.getElementById('title').value;
+    tasks[index].group = document.getElementById('group').value;
+    tasks[index].date = document.getElementById('date').value;
+    tasks[index].description = document.getElementById('description').value;
+
+    document.getElementById(`itemTitle${index}`).innerText = document.getElementById('title').value;
+    document.getElementById(`dueDate${index}`).innerText = tasks[index].date;
+
+
+    document.querySelector('.taskMenu').remove();
+
+
+}
 
 
 
