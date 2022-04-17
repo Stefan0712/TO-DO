@@ -10,6 +10,7 @@ const addGroupBtn = document.getElementById('newGroupBtn');
 let tasks = [];
 let currentIndex = 0;
 let groups = ["Default", "Completed"];
+let views = ['allTasks','completedTasks'];
 
 
 
@@ -179,17 +180,7 @@ function completeItem(index){
     
 
 
-function completedTasks(){
-    allTasksView.style.cssText = "display: none;";
-    completedTasksView.style.cssText = "display: flex;";
-    console.log("2")
-}
-function allTasks(){
-    allTasksView.style.cssText = "display: flex;";
-    completedTasksView.style.cssText = "display: none;";
-    console.log("1")
 
-}
 
 
 
@@ -226,11 +217,25 @@ function createNewGroup(){
     button.setAttribute('id',`${btnId}`)
     button.innerHTML = name;
     sideMenu.appendChild(button);
+    const newView = document.createElement('div')
+    newView.setAttribute('id',`${btnId}View`);
+    newView.setAttribute('onclick',`changeView(${btnId}View)`);
+    content.appendChild(newView);
+    views.push(`${btnId}View`);
     groups.push(name);
     document.getElementById("newGroupMenu").remove();
 
+
 }
 
+
+function changeView(viewId){
+    
+    for(let i=0;i<views.length;i++){
+        document.getElementById(`${viewId[i]}View`).style.cssText = "display: none";
+    }
+    document.getElementById(viewId).style.cssText = "display: flex";
+}
 
 
 
