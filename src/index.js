@@ -1,7 +1,11 @@
 const content = document.querySelector(".content");
+const allTasksView = document.getElementById('allTasksView');
+const completedTasksView = document.getElementById('completedTasksView');
 const sideMenu = document.querySelector(".sideMenu");
 const addBtn = document.getElementById("addBtn");
 const deletedTasks = document.getElementById("deletedItems");
+const allTasksBtn = document.getElementById("allTasks")
+const completedTasksBtn = document.getElementById("completedTasks")
 let tasks = [];
 let currentIndex = 0;
 
@@ -23,7 +27,7 @@ addBtn.onclick = function createTaskMenu(){
     //create task menu
     const taskMenu = document.createElement('div')
     taskMenu.classList.add('taskMenu')
-    content.appendChild(taskMenu)
+    allTasksView.appendChild(taskMenu)
 
     //create title label and input
     const titleLabel = document.createElement('label')
@@ -127,7 +131,7 @@ function addTask(){
 function addTaskToUI(task){
 
     //removes task menu
-    const content = document.querySelector(".content");
+    const allTasksView = document.getElementById('allTasksView')
     const taskMenu = document.querySelector('.taskMenu')
     taskMenu.remove();
 
@@ -135,7 +139,7 @@ function addTaskToUI(task){
     const item = document.createElement('div')
     item.setAttribute('id',`item${task.index}`)
     item.classList.add('item')
-    content.appendChild(item)
+    allTasksView.appendChild(item)
 
     const itemTitle = document.createElement('div')
     itemTitle.setAttribute('id','title')
@@ -156,15 +160,17 @@ function addTaskToUI(task){
 
 }
 function completeItem(index){
-    //need to implement something to change all the indexex after the deleted item so they match with their current place in the array
     const item = document.getElementById(`item${index}`)
     const checkBox = document.getElementById(`task${index}`)
     if(checkBox.checked == true){
         tasks[index].group = "completed";
         item.style.cssText = "background-color: lightgreen; border: 1px solid green;";
+        completedTasksView.appendChild(item);
+
     } else {
         tasks[index].group = tasks[index].oldGroup;
         item.style.cssText = "background-color: rgba(67, 145, 155,0.5); border: none;";
+        allTasksView.appendChild(item);
     }
 
 
@@ -179,6 +185,35 @@ function completeItem(index){
     */
 }
     
+
+
+function completedTasks(){
+    allTasksView.style.cssText = "display: none;";
+    completedTasksView.style.cssText = "display: flex;";
+    console.log("2")
+}
+function allTasks(){
+    allTasksView.style.cssText = "display: flex;";
+    completedTasksView.style.cssText = "display: none;";
+    console.log("1")
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 /*function createUpdateTaskMenu(task){
     //create task menu
