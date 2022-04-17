@@ -10,7 +10,7 @@ const addGroupBtn = document.getElementById('newGroupBtn');
 let tasks = [];
 let currentIndex = 0;
 let groups = ["Default", "Completed"];
-let views = ['allTasks','completedTasks'];
+let views = ['allTasksView','completedTasksView'];
 
 
 
@@ -185,11 +185,18 @@ function completeItem(index){
 
 
 function createNewGroupMenu(){
+    if(document.getElementById("newGroupMenu") === null){
     //creates menu for a new group
     const content = document.querySelector(".content");
     const newGroupMenu = document.createElement("div")
     newGroupMenu.setAttribute("id",'newGroupMenu')
     content.appendChild(newGroupMenu)
+
+        const closeIcon = document.createElement('div')
+        closeIcon.innerText = "✖";
+        closeIcon.setAttribute('id','closeIcon');
+        closeIcon.setAttribute('onclick','document.getElementById("newGroupMenu").remove();')
+        newGroupMenu.appendChild(closeIcon)
 
     const nameLabel = document.createElement('label')
     nameLabel.innerHTML = "Group name"
@@ -207,36 +214,43 @@ function createNewGroupMenu(){
 
     newGroupMenu.appendChild(nameInput);
     newGroupMenu.appendChild(groupSubmitBtn);
+    } 
+
+
 }
+
 
 function createNewGroup(){
     const name = document.getElementById('nameInput').value;
     let btnId = name.replace(/\s+/g, '');
+    let viewId = `${btnId}View`;
     const button = document.createElement('div')
     button.classList.add('menuItem')
     button.setAttribute('id',`${btnId}`)
     button.innerHTML = name;
+    button.setAttribute('onclick',`changeView("${viewId}")`);
     sideMenu.appendChild(button);
     const newView = document.createElement('div')
-    newView.setAttribute('id',`${btnId}View`);
-    newView.setAttribute('onclick',`changeView(${btnId}View)`);
+    newView.setAttribute('id',`${viewId}`);
+    newView.classList.add('views')
     content.appendChild(newView);
-    views.push(`${btnId}View`);
+    views.push(`${viewId}`);
     groups.push(name);
     document.getElementById("newGroupMenu").remove();
 
 
+  
 }
 
-
+//changes the view from a group to another
 function changeView(viewId){
     
     for(let i=0;i<views.length;i++){
-        document.getElementById(`${viewId[i]}View`).style.cssText = "display: none";
+        
+        document.getElementById(`${views[i]}`).style.cssText = "display: none";
     }
     document.getElementById(viewId).style.cssText = "display: flex";
 }
-
 
 
 
