@@ -6,8 +6,10 @@ const addBtn = document.getElementById("addBtn");
 const deletedTasks = document.getElementById("deletedItems");
 const allTasksBtn = document.getElementById("allTasks")
 const completedTasksBtn = document.getElementById("completedTasks")
+const addGroupBtn = document.getElementById('newGroupBtn');
 let tasks = [];
 let currentIndex = 0;
+let groups = ["Default", "Completed"];
 
 
 
@@ -49,26 +51,16 @@ addBtn.onclick = function createTaskMenu(){
 
     //create selection options
 
-    const defaultOption = document.createElement('option')
-    defaultOption.setAttribute('value','group0')
-    defaultOption.innerText = "Default group"
+    for(let i=0;i<groups.length;i++){
+        const option = document.createElement('option')
+        option.setAttribute('value',`${groups[i]}`)
+        option.innerText = `${groups[i]}`
+        group.appendChild(option);
 
-    const option2 = document.createElement('option')
-    option2.setAttribute('value','group2')
-    option2.innerText = "Group 2"
+    }
 
-    const option3 = document.createElement('option')
-    option3.setAttribute('value','group3')
-    option3.innerText = "Group 3"
 
-    const option4 = document.createElement('option')
-    option4.setAttribute('value','group4')
-    option4.innerText = "Group 4"
-
-    group.appendChild(defaultOption);
-    group.appendChild(option2)
-    group.appendChild(option3)
-    group.appendChild(option4)
+   
 
     //create date input for due date
     const dueDateLabel = document.createElement('label')
@@ -201,6 +193,43 @@ function allTasks(){
 
 
 
+function createNewGroupMenu(){
+    //creates menu for a new group
+    const content = document.querySelector(".content");
+    const newGroupMenu = document.createElement("div")
+    newGroupMenu.setAttribute("id",'newGroupMenu')
+    content.appendChild(newGroupMenu)
+
+    const nameLabel = document.createElement('label')
+    nameLabel.innerHTML = "Group name"
+    newGroupMenu.appendChild(nameLabel)
+
+    const nameInput = document.createElement('input')
+    nameInput.setAttribute('type','text')
+    nameInput.setAttribute('id','nameInput')
+
+    const groupSubmitBtn = document.createElement("button")
+    groupSubmitBtn.setAttribute("type","button")
+    groupSubmitBtn.setAttribute('id','groupSubmitBtn')
+    groupSubmitBtn.setAttribute('onclick','createNewGroup()')
+    groupSubmitBtn.innerHTML = "Add";
+
+    newGroupMenu.appendChild(nameInput);
+    newGroupMenu.appendChild(groupSubmitBtn);
+}
+
+function createNewGroup(){
+    const name = document.getElementById('nameInput').value;
+    let btnId = name.replace(/\s+/g, '');
+    const button = document.createElement('div')
+    button.classList.add('menuItem')
+    button.setAttribute('id',`${btnId}`)
+    button.innerHTML = name;
+    sideMenu.appendChild(button);
+    groups.push(name);
+    document.getElementById("newGroupMenu").remove();
+
+}
 
 
 
@@ -211,85 +240,3 @@ function allTasks(){
 
 
 
-
-
-
-    
-/*function createUpdateTaskMenu(task){
-    //create task menu
-    const taskMenu = document.createElement('div')
-    taskMenu.classList.add('taskMenu')
-    content.appendChild(taskMenu)
-
-    //create title label and input
-    const titleLabel = document.createElement('label')
-    titleLabel.innerText = "Enter a title"
-    const title = document.createElement("input")
-    title.setAttribute('id','title')
-    title.setAttribute('type','text')
-    title.setAttribute('placeholder','Title')
-    taskMenu.appendChild(titleLabel)
-    taskMenu.appendChild(title)
-
-    //create group selection 
-    const groupLabel = document.createElement('label')
-    groupLabel.innerText = "Select a group"
-    const group = document.createElement("select")
-    group.setAttribute('id','group')
-    taskMenu.appendChild(groupLabel)
-    taskMenu.appendChild(group)
-
-    //create selection options
-
-    const defaultOption = document.createElement('option')
-    defaultOption.setAttribute('value','group0')
-    defaultOption.innerText = "Default group"
-
-    const option2 = document.createElement('option')
-    option2.setAttribute('value','group2')
-    option2.innerText = "Group 2"
-
-    const option3 = document.createElement('option')
-    option3.setAttribute('value','group3')
-    option3.innerText = "Group 3"
-
-    const option4 = document.createElement('option')
-    option4.setAttribute('value','group4')
-    option4.innerText = "Group 4"
-
-    group.appendChild(defaultOption);
-    group.appendChild(option2)
-    group.appendChild(option3)
-    group.appendChild(option4)
-
-    //create date input for due date
-    const dueDateLabel = document.createElement('label')
-    dueDateLabel.innerText = "Due date"
-
-    const dueDate = document.createElement('input')
-    dueDate.setAttribute('type','date')
-    dueDate.setAttribute('id','date')
-
-    taskMenu.appendChild(dueDateLabel)
-    taskMenu.appendChild(dueDate)
-    
-
-    //add description input
-    const descriptionLabel = document.createElement('label')
-    descriptionLabel.innerText = "Description"
-    const description = document.createElement('textarea')
-    description.setAttribute('id','description')
-    description.setAttribute('placeholder','Description..')
-    taskMenu.appendChild(descriptionLabel)
-    taskMenu.appendChild(description)
-
-    //create the add task button
-
-    const taskBtn = document.createElement('button')
-    taskBtn.setAttribute("type","button")
-    taskBtn.setAttribute('id','addTask')
-    taskBtn.setAttribute("onclick","addTask()")
-    taskBtn.innerHTML = "Add"
-    taskMenu.appendChild(taskBtn)
-    
-}*/
