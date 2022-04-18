@@ -12,7 +12,37 @@ let currentIndex = 0;
 let groups = ["allTasks", "Completed"];
 let views = ['allTasksView','completedTasksView'];
 
+const lightBtn = document.getElementById("lightMode");
+const darkBtn = document.getElementById("darkMode");
 
+
+
+function lightMode(){
+    darkBtn.style.cssText = "background-color: white";
+    lightBtn.style.cssText = "background-color: #0a1c30";
+    sideMenu.style.cssText = "background-color: #85F4FF";
+    document.querySelector(".content").style.cssText = "background-color: #F7F7F7";
+    document.querySelector(".header").style.cssText = "background-color: #8D8DAA";
+    document.querySelector(".sideMenu").style.cssText = "background-color: #DFDFDE; border: none;";
+    document.querySelector(".groupList").style.cssText = "background-color: rgba(223, 223, 222, 0.5); border: none;";
+    addGroupBtn.style.cssText = "background-color: #8D8DAA";
+    addBtn.style.cssText = "background-color: #8D8DAA";
+    
+
+
+
+}
+
+
+function darkMode(){
+    lightBtn.style.cssText = "background-color: white";
+    darkBtn.style.cssText = "background-color: #0a1c30";
+    sideMenu.style.cssText = "background-color: #85F4FF";
+    document.querySelector(".content").style.cssText = "background-color: #5584AC";
+    document.querySelector(".header").style.cssText = "background-color: #112D4E";
+    document.querySelector(".sideMenu").style.cssText = "background-color: #3F72AF";
+    document.querySelector(".groupList").style.cssText = "background-color: rgba(17, 45, 78, 0.3)";
+}
 
 
 
@@ -112,10 +142,7 @@ function addTask(){
     const groupValue = document.getElementById('group').value;
 
     if(titleValue =="" || titleValue==" "){
-        const errorMsg = document.createElement('div')
-        errorMsg.classList.add("nameError")
-        errorMsg.innerHTML = "Title is invalid. Try another one";
-        document.getElementById("title").appendChild(errorMsg);
+        document.getElementById("titleLabel").innerHtml = 
         document.getElementById("title").style.cssText = " border: 3px solid red; font-size: 20px";
     } else {
     //creates a new object with those values

@@ -16,6 +16,39 @@ html{
     grid-row: 1 / 1;
     height: 50px;
 }
+.theme{
+    margin-left: auto;
+    margin-right: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.theme button{
+    height: 30px;
+    width: 20px;
+    display: relative;
+    border: none;
+    
+}
+.nextTheme{
+    margin-right: 20px;
+}
+#darkMode{
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+    margin-left: 0px;
+    background-color:#0a1c30;
+    
+    
+}
+#lightMode{
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+    margin-right: 0px;
+    
+    
+}
 body{
     height: 100%;
     overflow: hidden;
@@ -96,7 +129,7 @@ body{
     width: 75%;
     height: 50px;
     border-radius: 5px;
-    background-color: rgba(219, 226, 239,0.4);
+    background-color: rgba(17, 45, 78, 0.4);
     margin: 5px 0px 10px 0px;
     display: grid;
     grid-template-columns: 5fr 1fr ;
@@ -106,7 +139,6 @@ body{
     justify-content: center;
     font-size: 20px;
     color: white;
-    backdrop-filter: blur(10px);
    
 }
 .completeAnimation{
