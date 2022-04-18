@@ -17,7 +17,7 @@ const darkBtn = document.getElementById("darkMode");
 
 
 
-function lightMode(){
+lightBtn.onclick = function lightMode(){
     darkBtn.style.cssText = "background-color: white";
     lightBtn.style.cssText = "background-color: #0a1c30";
     sideMenu.style.cssText = "background-color: #85F4FF";
@@ -34,7 +34,7 @@ function lightMode(){
 }
 
 
-function darkMode(){
+darkBtn.onclick = function darkMode(){
     lightBtn.style.cssText = "background-color: white";
     darkBtn.style.cssText = "background-color: #0a1c30";
     sideMenu.style.cssText = "background-color: #85F4FF";
