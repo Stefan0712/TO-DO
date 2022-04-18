@@ -111,21 +111,23 @@ function addTask(){
     const descriptionValue = document.getElementById("description").value;
     const groupValue = document.getElementById('group').value;
 
+    if(titleValue =="" || titleValue==" "){
+        const errorMsg = document.createElement('div')
+        errorMsg.classList.add("nameError")
+        errorMsg.innerHTML = "Title is invalid. Try another one";
+        document.getElementById("title").appendChild(errorMsg);
+        document.getElementById("title").style.cssText = " border: 3px solid red; font-size: 20px";
+    } else {
     //creates a new object with those values
     var task = new Task(titleValue, groupValue, dateValue, descriptionValue, currentIndex);
     
-    /*var task = Object.create(Task);
-    task.title = titleValue;
-    task.date = dateValue;
-    task.description = descriptionValue;
-    task.group = groupValue;
-    task.index = currentIndex;*/
+ 
 
     currentIndex++;
     console.log(task);
     tasks.push(task);
     addTaskToUI(task);
-    
+    }
     
 }
 
@@ -136,27 +138,35 @@ function addTaskToUI(task){
     taskMenu.remove();
 
     //creates the item that will be the task
-    let viewId = task.group.replace(/\s+/g, '');
+    let viewId = task.group.replace(/\s+/g, '');        //creates an id by eliminating all white spaces from group name
     const item = document.createElement('div')
-    item.setAttribute('id',`item${task.index}`)
-    item.setAttribute('onclick',`editTaskMenu(${task.index})`)
+    item.setAttribute('id',`item${task.index}`)         //every item will have the id "item + index"
     item.classList.add('item')
     document.getElementById(`${viewId}View`).appendChild(item)
 
     const itemTitle = document.createElement('div')
     itemTitle.setAttribute('id',`itemTitle${task.index}`)
     itemTitle.innerHTML = task.title
+    itemTitle.setAttribute('onclick',`editTaskMenu(${task.index})`)
     item.appendChild(itemTitle);
     
     const itemDueDate = document.createElement('div')
     itemDueDate.setAttribute('id',`dueDate${task.index}`);
+    if(task.date == ""|| task.date == null){
+        itemDueDate.innerText = "Due date not set";
+
+    } else {
     itemDueDate.innerText = task.date;
+    }
+    itemDueDate.setAttribute('onclick',`editTaskMenu(${task.index})`)
     item.appendChild(itemDueDate)
 
     const itemCheckBox = document.createElement('input')
     itemCheckBox.setAttribute('type','checkbox')
     itemCheckBox.setAttribute('id',`task${task.index}`);
-    itemCheckBox.setAttribute('onclick',`completeItem(${task.index})`);
+    itemCheckBox.classList.add('checkBoxes');
+    itemCheckBox.setAttribute('onclick',`completeItem(${task.index})`);    
+    
     item.appendChild(itemCheckBox)
     
 
@@ -167,6 +177,7 @@ function completeItem(index){
     const checkBox = document.getElementById(`task${index}`)
     
     if(checkBox.checked == true){
+
         tasks[index].group = "completed";
         item.style.cssText = "background-color: lightgreen; border: 1px solid green;";
         completedTasksView.appendChild(item);
@@ -182,14 +193,7 @@ function completeItem(index){
 
 
 
-    /*
-    item.remove();
-    tasks.splice(index,1);
-    for(let i=index-1;i<tasks.length;i++){
-        tasks[i].index--;
-    }
-    console.log(tasks)
-    */
+   
 }
     
 
@@ -240,12 +244,12 @@ function createNewGroup(){
         if(groups[i] == name || name=="" || name==" "){
             const input = document.getElementById("nameInput");
             input.style.cssText = "border: 1px solid red";
-            if(document.getElementById("nameError")!==null){
+            if(document.querySelector("nameError")!==null){
 
-                document.getElementById('nameError').remove();
+                document.querySelector('nameError').remove();
             }
             const error = document.createElement('div')
-            error.setAttribute('id','nameError')
+            error.classList.add('nameError')
             error.innerText = "The group name already exists!";
             document.getElementById("newGroupMenu").appendChild(error);
             document.getElementById("groupSubmitButton").disable = true;
