@@ -1,3 +1,4 @@
+
 const content = document.querySelector(".content");
 const allTasksView = document.getElementById('allTasksView');
 const completedTasksView = document.getElementById('completedTasksView');
@@ -147,7 +148,7 @@ function addTask(){
     //creates a new object with those values
     var task = new Task(titleValue, groupValue, dateValue, descriptionValue, currentIndex);
     
- 
+    
 
     currentIndex++;
     console.log(task);
@@ -495,4 +496,6 @@ function editTask(index){
 
 
 }
+
+
 
