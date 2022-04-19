@@ -131,7 +131,7 @@ body{
     background-color: rgba(17, 45, 78, 0.4);
     margin: 5px 0px 10px 0px;
     display: grid;
-    grid-template-columns: 5fr 1fr ;
+    grid-template-columns: 5fr 1fr 0.5fr;
     grid-template-rows: 1fr 1fr;
     padding: 10px;
     align-items: center;
@@ -145,19 +145,32 @@ body{
     animation-duration: 0.5s;
 }
 
-#title{
-    grid-column: 1 / 2;
+.itemTitles{
+    grid-column: 1 / 1;
+    grid-row: 1 / 1;
 }
-#dueDate{
-    grid-column: 1 / 2;
+.itemDueDates{
+    grid-column: 1 / 1;
+    grid-row: 2 / 2;
 }
-.item input{
+.checkBoxes{
     grid-column: 2 / 2;
     grid-row: 1 / 3;
     height: 30px;
     width: 30px;
     justify-self: end;
     margin-right: 20px;
+    justify-self: center;
+}
+.deleteBtns{
+    grid-column: 3 / 3;
+    grid-row: 1 / 3;
+    height: 40px;
+    width: 40px;
+    justify-self: start;
+    margin-right: 20px;
+    color: red;
+    font-size: 40px;
 }
 
 .taskMenu{

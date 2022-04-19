@@ -3,14 +3,13 @@ const allTasksView = document.getElementById('allTasksView');
 const completedTasksView = document.getElementById('completedTasksView');
 const sideMenu = document.querySelector(".groupList");
 const addBtn = document.getElementById("addBtn");
-const deletedTasks = document.getElementById("deletedItems");
 const allTasksBtn = document.getElementById("allTasks")
 const completedTasksBtn = document.getElementById("completedTasks")
 const addGroupBtn = document.getElementById('newGroupBtn');
 let tasks = [];
 let currentIndex = 0;
-let groups = ["allTasks", "Completed"];
-let views = ['allTasksView','completedTasksView'];
+let groups = ["defaultTasks", "Completed", "Deleted"];
+let viewsList = ['defaultTasksView', 'allTasksView','completedTasksView','deletedItemsView'];
 
 const lightBtn = document.getElementById("lightMode");
 const darkBtn = document.getElementById("darkMode");
@@ -54,6 +53,7 @@ function Task(title,group,date, description, index){
     this.group = group;
     this.index = index;
     this.oldGroup = group;
+    this.wasCompleted = false;
 }
 
 addBtn.onclick = function createTaskMenu(){
@@ -142,7 +142,6 @@ function addTask(){
     const groupValue = document.getElementById('group').value;
 
     if(titleValue =="" || titleValue==" "){
-        document.getElementById("titleLabel").innerHtml = 
         document.getElementById("title").style.cssText = " border: 3px solid red; font-size: 20px";
     } else {
     //creates a new object with those values
@@ -174,11 +173,13 @@ function addTaskToUI(task){
     const itemTitle = document.createElement('div')
     itemTitle.setAttribute('id',`itemTitle${task.index}`)
     itemTitle.innerHTML = task.title
+    itemTitle.classList.add("itemTitles")
     itemTitle.setAttribute('onclick',`editTaskMenu(${task.index})`)
     item.appendChild(itemTitle);
     
     const itemDueDate = document.createElement('div')
     itemDueDate.setAttribute('id',`dueDate${task.index}`);
+    itemDueDate.classList.add("itemDueDates")
     if(task.date == ""|| task.date == null){
         itemDueDate.innerText = "Due date not set";
 
@@ -193,6 +194,14 @@ function addTaskToUI(task){
     itemCheckBox.setAttribute('id',`task${task.index}`);
     itemCheckBox.classList.add('checkBoxes');
     itemCheckBox.setAttribute('onclick',`completeItem(${task.index})`);    
+
+    const deleteBtn = document.createElement('div')
+    deleteBtn.setAttribute('id',`delete${task.index}`)
+    deleteBtn.classList.add("deleteBtns")
+    deleteBtn.innerHTML = "✖";
+    deleteBtn.setAttribute('onclick',`deleteTask(${task.index})`);
+    item.appendChild(deleteBtn);
+
     
     item.appendChild(itemCheckBox)
     
@@ -204,14 +213,20 @@ function completeItem(index){
     const checkBox = document.getElementById(`task${index}`)
     
     if(checkBox.checked == true){
-
-        tasks[index].group = "completed";
+        tasks[index].wasCompleted = true;
+        if(tasks[index].group == "deletedItems"){
+            item.style.cssText = "rgba(17, 45, 78, 0.4); border: none;";
+            document.getElementById(`delete${index}`).innerHTML = "✖";
+        }
+        tasks[index].group = "completedTasks";
         item.style.cssText = "background-color: lightgreen; border: 1px solid green;";
+        
         completedTasksView.appendChild(item);
 
     } else {
+        tasks[index].wasCompleted = false;
         tasks[index].group = tasks[index].oldGroup;
-        item.style.cssText = "background-color: rgba(67, 145, 155,0.5); border: none;";
+        item.style.cssText = "background-color: rgba(17, 45, 78, 0.4); border: none;";
         let viewId = tasks[index].group.replace(/\s+/g, '');
         document.getElementById(`${viewId}View`).appendChild(item);
         
@@ -221,6 +236,55 @@ function completeItem(index){
 
 
    
+}
+
+function deleteTask(index){
+    const item = document.getElementById(`item${index}`);
+    const deleteBtn = document.getElementById(`delete${index}`);
+    
+
+    if(tasks[index].group != "deletedItems"){
+        
+        tasks[index].group = "deletedItems";
+        let viewId = tasks[index].group.replace(/\s+/g, '');
+        item.style.cssText = "background-color: red";
+        deleteBtn.innerHTML = "↷";
+        deleteBtn.style.cssText = "color: white;"
+        function markComplete(index){
+            if(tasks[index].wasCompleted == true){
+            document.getElementById(`task${index}`).checked = false;
+            tasks[index].group = tasks[index].oldGroup;
+            tasks[index].wasCompleted = false;
+            } else {
+                document.getElementById(`task${index}`).checked = true;
+                tasks[index].group = "completedTasks"
+                tasks[index].wasCompleted = true;
+                document.getElementById(`task${index}`).removeAttribute("onclick");
+                document.getElementById(`task${index}`).setAttribute("onclick",`completeItem(${index})`);
+            }
+        }
+        document.getElementById(`task${index}`).removeAttribute("onclick");
+        document.getElementById(`task${index}`).setAttribute("onclick",`completeItem(${index})`);
+        document.getElementById(`${viewId}View`).appendChild(item);
+    } else if(tasks[index].group == "deletedItems"){
+        if(tasks[index].wasCompleted == true){
+            tasks[index].group = 'completedTasks';
+            document.getElementById(`task${index}`).checked = true;
+        } else {
+            tasks[index].group = tasks[index].oldGroup;
+            document.getElementById(`task${index}`).checked = false;
+            };
+        let viewId = tasks[index].group.replace(/\s+/g, '');
+        item.style.cssText = "rgba(17, 45, 78, 0.4); border: none;";
+        deleteBtn.innerHTML = "✖";
+        deleteBtn.style.cssText = "color: red;";
+        
+        document.getElementById(`${viewId}View`).appendChild(item);
+
+    }
+
+    
+
 }
     
 
@@ -294,7 +358,7 @@ function createNewGroup(){
     newView.setAttribute('id',`${viewId}`);
     newView.classList.add('views')
     content.appendChild(newView);
-    views.push(`${viewId}`);
+    viewsList.push(`${viewId}`);
     groups.push(name);
     document.getElementById("newGroupMenu").remove();
 
@@ -304,13 +368,35 @@ function createNewGroup(){
 
 //changes the view from a group to another
 function changeView(viewId){
-    
-    for(let i=0;i<views.length;i++){
-        
-        document.getElementById(`${views[i]}`).style.cssText = "display: none";
+    if(viewId == "allTasksView"){
+        showAllTasks(tasks);
+    }
+    if(viewId != "allTasksView"){
+        hideAllTasks(tasks);
+    }
+    for(let i=0;i<viewsList.length;i++){      
+        document.getElementById(`${viewsList[i]}`).style.cssText = "display: none";
     }
     document.getElementById(viewId).style.cssText = "display: flex";
 }
+
+
+function showAllTasks(tasks){
+    for(let i=0;i<tasks.length;i++){
+        let child = document.getElementById(`item${tasks[i].index}`);
+        allTasksView.appendChild(child);
+    }
+}
+function hideAllTasks(tasks){
+    for(let i=0;i<tasks.length;i++){
+        let child = document.getElementById(`item${tasks[i].index}`);
+        let parent = document.getElementById(`${tasks[i].group}View`);
+        parent.appendChild(child);
+        
+    }
+}
+
+
 
 
 
@@ -409,7 +495,4 @@ function editTask(index){
 
 
 }
-
-
-
 

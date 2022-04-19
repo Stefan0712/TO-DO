@@ -20,17 +20,21 @@
     <div class="sideMenu">
         <div class="groupList">
             <div class="sideMenuTitle">Groups</div>
-            <div class="menuItem" id="allTasks" onclick="changeView('allTasksView')">All Tasks</div>
+            <div class="menuItem" id="defaultTasks" onclick="changeView('defaultTasksView')">Default</div>
+            <div class="menuItem" id="allTasks" onclick="changeView('allTasksView')">All tasks</div>
             <div class="menuItem" id="completedTasks" onclick="changeView('completedTasksView')">Completed Tasks</div>
-            <div class="menuItem" id="deletedItems">Deleted Tasks</div>
+            <div class="menuItem" id="deletedItems" onclick="changeView('deletedItemsView')">Deleted Tasks</div>
         </div>
         
         <div id="newGroupBtn" onclick="createNewGroupMenu()">New Group</div>
         <div id="addBtn">+</div>
     </div>
     <div class="content">
+        <div class="views" id="defaultTasksView"></div>
         <div class="views" id="allTasksView"></div>
         <div class="views" id="completedTasksView"></div>
+        <div class="views" id="deletedItemsView"></div>
+
        
         
     </div>
